@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 from typing import Optional
-import asyncio
 from datetime import timedelta
 
 class Mod(commands.Cog):
