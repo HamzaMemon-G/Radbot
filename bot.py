@@ -110,7 +110,7 @@ async def whois(interaction: discord.Interaction, user: discord.Member):
     embed.add_field(name="ID", value=user.id, inline=False)
     embed.add_field(name="Joined at", value=user.joined_at.strftime("%d/%m/%Y, %H:%M:%S"), inline=False)
     embed.add_field(name="Created at", value=user.created_at.strftime("%d/%m/%Y, %H:%M:%S"), inline=False)
-    embed.set_thumbnail(url=user.avatar_url)
+    embed.set_thumbnail(url=user.display_avatar)
     embed.set_footer(text=f"Requested by {interaction.user}")
     await interaction.response.send_message(embed=embed, ephemeral=True)
 
