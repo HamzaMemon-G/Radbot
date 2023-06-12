@@ -114,6 +114,23 @@ async def whois(interaction: discord.Interaction, user: discord.Member):
     embed.set_footer(text=f"Requested by {interaction.user}")
     await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    
+@bot.tree.command(name="purge", description="Purge messages in a channel")
+async def purge(interaction: discord.Interaction, amount: int):
+    await interaction.channel.purge(limit=amount)
+    await interaction.response.send_message(f"Purged {amount} messages", ephemeral=True)
+
+@bot.tree.command(name="ban", description="Ban a user from the server")
+async def ban(interaction: discord.Interaction, user: discord.Member, *, reason: str):
+    await user.ban(reason=reason)
+    await interaction.channel.send(f"Banned {user.mention} for **{reason}**")
+    await interaction.response.send_message(f"Banned {user} for **{reason}**", ephemeral=True)
+
+@bot.tree.command(name="unban", description="Unban a user from the server")
+async def unban(interaction: discord.Interaction, user: discord.User, *, reason: str):
+    member = await bot.fetch_user(user.id)
+    await interaction.guild.unban(member, reason=reason)
+    await interaction.channel.send(f"Unbanned {user.mention} for **{reason}**")
+    dm_channel = await user.create_dm()
+    await dm_channel.send(f"You have been unbanned from **{interaction.guild.name}** for **{reason}**")
 
 bot.run(token)
