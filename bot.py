@@ -1,6 +1,6 @@
 import discord
 import discord.ext.commands as commands
-import datetime
+from datetime import timedelta
 from dotenv import load_dotenv
 import os
 import random
@@ -132,5 +132,12 @@ async def unban(interaction: discord.Interaction, user: discord.User, *, reason:
     await interaction.channel.send(f"Unbanned {user.mention} for **{reason}**")
     dm_channel = await user.create_dm()
     await dm_channel.send(f"You have been unbanned from **{interaction.guild.name}** for **{reason}**")
+
+@bot.tree.command(name="timeout", description="Timeout a user")
+async def timeout(interaction: discord.Interaction, member: discord.Member, minitues: int, *, reason: str):
+    delta = timedelta(minutes=minitues)
+    await member.timeout(delta, reason=reason)
+    await interaction.channel.send(f"Timed out {member.mention} for **{reason}**")
+    await interaction.response.send_message(f"Timed out {member} for **{reason}**", ephemeral=True)
 
 bot.run(token)
