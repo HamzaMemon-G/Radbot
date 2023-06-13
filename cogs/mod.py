@@ -3,9 +3,11 @@ from discord.ext import commands
 from discord import app_commands
 from typing import Optional
 from datetime import timedelta
+from bot import MyBot
+
 
 class Mod(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: MyBot):
         self.bot = bot
 
     @app_commands.command(name="kick", description="Kick a user from the server")
@@ -16,8 +18,9 @@ class Mod(commands.Cog):
     
     @app_commands.command(name="warn", description="Warn a user")
     async def warn(self, interaction: discord.Interaction, user: discord.Member, *, reason: str):
+        await interaction.response.defer(thinking=True)
         await interaction.channel.send(f"Warned {user.mention} for **{reason}**")
-        await interaction.response.send_message(f"Warned {user} for **{reason}**", ephemeral=True)
+        await interaction.followup.send(f"Warned {user} for **{reason}**", ephemeral=True)
 
     @app_commands.command(name="whois", description="Get information about a user")
     async def whois(self, interaction: discord.Interaction, user: discord.Member):
@@ -55,5 +58,5 @@ class Mod(commands.Cog):
         await interaction.channel.send(f"Timed out {member.mention} for **{reason}**")
         await interaction.response.send_message(f"Timed out {member} for **{reason}**", ephemeral=True)
 
-async def setup(bot: commands.Bot):
+async def setup(bot: MyBot):
     await bot.add_cog(Mod(bot))

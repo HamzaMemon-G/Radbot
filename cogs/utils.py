@@ -4,9 +4,11 @@ from discord import app_commands
 from typing import Optional
 import asyncio
 from datetime import timedelta
+from bot import MyBot
+
 
 class Utils(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: MyBot):
         self.bot = bot
 
     @app_commands.command(name="announce", description="Announce a message to a channel")
@@ -66,5 +68,5 @@ class Utils(commands.Cog):
 
         await interaction.channel.send(result_message)
 
-async def setup(bot: commands.Bot):
+async def setup(bot: MyBot):
     await bot.add_cog(Utils(bot))
