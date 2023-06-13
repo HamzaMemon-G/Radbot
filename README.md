@@ -12,7 +12,7 @@
 
 **3. Status Command : Command to check status of bot**
 
-**4. Sync Command: Command to sync all commands**
+**4. Sync Command : Command to sync all commands**
 
 **5. Kick Command : Command to kick member**
 
