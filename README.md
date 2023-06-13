@@ -25,3 +25,5 @@
 **9. Unban Command : Command to unban member**
 
 **10. Timeout Command : Command to give timeout**
+
+***More commands coming soon***
