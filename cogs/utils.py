@@ -72,11 +72,11 @@ class Utils(commands.Cog):
     @app_commands.command(name="synccommand", description="Sync all the commands")
     async def sync_command(self, interaction: discord.Interaction):
         await self.bot.tree.sync()
-        await interaction.response.send_message("Synced all commands", ephemeral=True)    
+        await interaction.response.send_message("Synced all the commands", ephemeral=True)    
 
-    @app_commands.command(name="test", description="test command")
-    async def test(self, interaction: discord.Interaction):
-        await interaction.response.send_message("Test command is working", ephemeral=True)
+    @app_commands.command(name="status", description="test command")
+    async def Status(self, interaction: discord.Interaction):
+        await interaction.response.send_message("Bot is working fine", ephemeral=True)
 
 async def setup(bot: MyBot):
     await bot.add_cog(Utils(bot))
