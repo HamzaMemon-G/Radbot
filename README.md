@@ -12,18 +12,20 @@
 
 **3. Status Command : Command to check status of bot**
 
-**4. Kick Command : Command to kick member**
+**4. Sync Command: Command to sync all commands**
 
-**5. Warn Command : Command to warn member**
+**5. Kick Command : Command to kick member**
 
-**6. Whois Command : Command to check information about member**
+**6. Warn Command : Command to warn member**
 
-**7. Purge Command : Command to delete messages**
+**7. Whois Command : Command to check information about member**
 
-**8. Ban Command : Command to ban member**
+**8. Purge Command : Command to delete messages**
 
-**9. Unban Command : Command to unban member**
+**9. Ban Command : Command to ban member**
 
-**10. Timeout Command : Command to give timeout**
+**10. Unban Command : Command to unban member**
+
+**11. Timeout Command : Command to give timeout**
 
 ***More commands coming soon***
