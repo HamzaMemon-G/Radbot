@@ -70,13 +70,28 @@ class Utils(commands.Cog):
         await interaction.channel.send(result_message)
 
     @app_commands.command(name="synccommand", description="Sync all the commands")
+    @app_commands.checks.has_role("STAFF")
     async def sync_command(self, interaction: discord.Interaction):
         await self.bot.tree.sync()
         await interaction.response.send_message("Synced all the commands", ephemeral=True)    
 
     @app_commands.command(name="status", description="test command")
+    @app_commands.checks.has_role("STAFF")
     async def Status(self, interaction: discord.Interaction):
         await interaction.response.send_message("Bot is working fine", ephemeral=True)
+
+    @app_commands.command(name="lockvc", description="Lock a voice channel")
+    @app_commands.checks.has_role("STAFF")
+    async def voicelock(self, interaction: discord.Interaction, channel: discord.VoiceChannel):
+        await channel.set_permissions(interaction.guild.default_role, connect=False)
+        await interaction.response.send_message("Locked the voice channel", ephemeral=True)
+
+    @app_commands.command(name="unlockvc", description="Unlock a voice channel")
+    @app_commands.checks.has_role("STAFF")
+    async def voiceunlock(self, interaction: discord.Interaction, channel: discord.VoiceChannel):
+        await channel.set_permissions(interaction.guild.default_role, connect=True)
+        await interaction.response.send_message("Unlocked the voice channel", ephemeral=True)
+    
 
 async def setup(bot: MyBot):
     await bot.add_cog(Utils(bot))

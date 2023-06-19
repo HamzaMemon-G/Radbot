@@ -19,6 +19,5 @@ class Greetings(commands.Cog):
         if content in [greeting.lower() for greeting in greetings]:
             await message.channel.send(random.choice(greetings))
 
-
 async def setup(bot: MyBot):
     await bot.add_cog(Greetings(bot))
