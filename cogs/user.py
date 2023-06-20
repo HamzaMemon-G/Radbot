@@ -15,7 +15,8 @@ class User(commands.Cog):
         embed.add_field(name="API", value="Discord.py", inline=True)
         embed.add_field(name="Language Support", value="English", inline=True)
         embed.add_field(name="Host", value="No Host", inline=True)
-        embed.set_image(url="https://i.imgur.com/Zn06dLv.png")
+        embed.set_image(url="https://i.imgur.com/Zn06dLv.pngc")
+        embed.set_footer(text="RADBOT", icon_url="https://i.imgur.com/Zn06dLv.png")
 
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
