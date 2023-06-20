@@ -92,6 +92,20 @@ class Utils(commands.Cog):
         await channel.set_permissions(interaction.guild.default_role, connect=True)
         await interaction.response.send_message("Unlocked the voice channel", ephemeral=True)
     
+    @app_commands.command(name="say", description="Say a message")
+    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
+    async def say(self, interaction: discord.Interaction, channel: discord.TextChannel, embed: bool, *, message: str, title: Optional[str]=None, r: Optional[int]=255, g: Optional[int]=119, b: Optional[int]=0):
+        
+        if embed == True:
+            embed = discord.Embed(title=title, description=message, color=discord.Color.from_rgb(r, g, b))
+            embed.set_footer(text=f"Message by {interaction.user}")
+            await interaction.response.defer(thinking=True)
+            await channel.send(embed=embed)
+        else:
+            await interaction.response.defer(thinking=True)
+            await channel.send(message)
+            await interaction.followup.send("Message has been sent", ephemeral=True)
+
 
 async def setup(bot: MyBot):
     await bot.add_cog(Utils(bot))
