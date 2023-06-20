@@ -12,7 +12,7 @@ class Utils(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="announce", description="Announce a message to a channel")
-    @app_commands.checks.has_role("Staff")
+    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
     async def announce(self, interaction: discord.Interaction, channel: discord.TextChannel, role: discord.Role, embed: bool, *, message: str, title: Optional[str]=None, author: Optional[str]=None,r: Optional[int]=255, g: Optional[int]=119, b: Optional[int]=0):
     
         if embed == True:
@@ -32,7 +32,7 @@ class Utils(commands.Cog):
         await interaction.followup.send("Announced your message" , ephemeral=True)
 
     @app_commands.command(name="poll", description="Create a poll")
-    @app_commands.checks.has_role("Staff")
+    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
     async def poll(self, interaction: discord.Interaction, *, title: str, question: str, reaction1: str, reaction2: str, duration: int, r: Optional[int]=255, g: Optional[int]=119, b: Optional[int]=0):
         embed = discord.Embed(title=title, description=question, color=discord.Color.from_rgb(r, g, b))
         embed.set_footer(text=f"Poll created by {interaction.user}")
@@ -70,24 +70,24 @@ class Utils(commands.Cog):
         await interaction.channel.send(result_message)
 
     @app_commands.command(name="synccommand", description="Sync all the commands")
-    @app_commands.checks.has_role("STAFF")
+    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
     async def sync_command(self, interaction: discord.Interaction):
         await self.bot.tree.sync()
         await interaction.response.send_message("Synced all the commands", ephemeral=True)    
 
     @app_commands.command(name="status", description="test command")
-    @app_commands.checks.has_role("STAFF")
+    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
     async def Status(self, interaction: discord.Interaction):
         await interaction.response.send_message("Bot is working fine", ephemeral=True)
 
     @app_commands.command(name="lockvc", description="Lock a voice channel")
-    @app_commands.checks.has_role("STAFF")
+    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
     async def voicelock(self, interaction: discord.Interaction, channel: discord.VoiceChannel):
         await channel.set_permissions(interaction.guild.default_role, connect=False)
         await interaction.response.send_message("Locked the voice channel", ephemeral=True)
 
     @app_commands.command(name="unlockvc", description="Unlock a voice channel")
-    @app_commands.checks.has_role("STAFF")
+    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
     async def voiceunlock(self, interaction: discord.Interaction, channel: discord.VoiceChannel):
         await channel.set_permissions(interaction.guild.default_role, connect=True)
         await interaction.response.send_message("Unlocked the voice channel", ephemeral=True)
