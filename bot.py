@@ -19,6 +19,8 @@ class MyBot(commands.Bot):
 
     async def on_ready(self):
         print("Bot is ready")
+        activity = discord.Game(name="RADAR'S SERVER", type=discord.ActivityType.playing)
+        await bot.change_presence(activity=activity)
 
 if __name__ == "__main__":
 
