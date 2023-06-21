@@ -80,18 +80,6 @@ class Utils(commands.Cog):
     async def Status(self, interaction: discord.Interaction):
         await interaction.response.send_message("Bot is working fine", ephemeral=True)
 
-    @app_commands.command(name="lockvc", description="Lock a voice channel")
-    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
-    async def voicelock(self, interaction: discord.Interaction, channel: discord.VoiceChannel):
-        await channel.set_permissions(interaction.guild.default_role, connect=False)
-        await interaction.response.send_message("Locked the voice channel", ephemeral=True)
-
-    @app_commands.command(name="unlockvc", description="Unlock a voice channel")
-    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
-    async def voiceunlock(self, interaction: discord.Interaction, channel: discord.VoiceChannel):
-        await channel.set_permissions(interaction.guild.default_role, connect=True)
-        await interaction.response.send_message("Unlocked the voice channel", ephemeral=True)
-    
     @app_commands.command(name="say", description="Say a message")
     @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
     async def say(self, interaction: discord.Interaction, channel: discord.TextChannel, embed: bool, *, message: str, title: Optional[str]=None, r: Optional[int]=255, g: Optional[int]=119, b: Optional[int]=0):
