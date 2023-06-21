@@ -79,6 +79,17 @@ class Mod(commands.Cog):
         await interaction.channel.send(f"Unmuted {member.mention} for **{reason}**")
         await interaction.response.send_message(f"Unmuted {member} for **{reason}**", ephemeral=True)
         
+    @app_commands.command(name="lockvc", description="Lock a voice channel")
+    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
+    async def voicelock(self, interaction: discord.Interaction, channel: discord.VoiceChannel):
+        await channel.set_permissions(interaction.guild.default_role, connect=False)
+        await interaction.response.send_message("Locked the voice channel", ephemeral=True)
+
+    @app_commands.command(name="unlockvc", description="Unlock a voice channel")
+    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
+    async def voiceunlock(self, interaction: discord.Interaction, channel: discord.VoiceChannel):
+        await channel.set_permissions(interaction.guild.default_role, connect=True)
+        await interaction.response.send_message("Unlocked the voice channel", ephemeral=True)    
 
 async def setup(bot: MyBot):
     await bot.add_cog(Mod(bot))
