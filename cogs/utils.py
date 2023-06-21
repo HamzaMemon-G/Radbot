@@ -5,7 +5,7 @@ from typing import Optional
 import asyncio
 from datetime import timedelta
 from bot import MyBot
-
+from cogs.extra import allcommandslist, usercommandslist,url, iconurl
 
 class Utils(commands.Cog):
     def __init__(self, bot: MyBot):
@@ -69,7 +69,7 @@ class Utils(commands.Cog):
 
         await interaction.channel.send(result_message)
 
-    @app_commands.command(name="synccommand", description="Sync all the commands")
+    @app_commands.command(name="synccommands", description="Sync all the commands")
     @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
     async def sync_command(self, interaction: discord.Interaction):
         await self.bot.tree.sync()
@@ -106,6 +106,27 @@ class Utils(commands.Cog):
             await channel.send(message)
             await interaction.followup.send("Message has been sent", ephemeral=True)
 
+    @app_commands.command(name="help", description="Get help about commands")
+    async def help(self, interaction: discord.Interaction):
+
+        if any(role.name in ["STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN"] for role in interaction.user.roles):
+            embed = discord.Embed(title="Help (Staff)", description="", colour=0xff7700)
+            embed.set_author(name="RADBOT", url=url, icon_url=iconurl)
+            embed.set_thumbnail(url=iconurl)
+            embed.set_footer(text="RADBOT", icon_url=iconurl)
+            for command in allcommandslist:
+                embed.description += f"`/{command['name']}` - {command['description']}\n"
+        else:
+            user_commands = [command for command in usercommandslist if not command.get("staff_only")]
+            embed = discord.Embed(title="Help", description="", colour=0xff7700)
+            embed.set_author(name="RADBOT", url=url, icon_url=iconurl)
+            embed.set_thumbnail(url=iconurl)
+            embed.set_footer(text="RADBOT", icon_url=iconurl)
+            for command in user_commands:
+                embed.description += f"`/{command['name']}` - {command['description']}\n"
+
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+        
 
 async def setup(bot: MyBot):
     await bot.add_cog(Utils(bot))
