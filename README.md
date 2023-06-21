@@ -30,9 +30,15 @@
 
 **12. Timeout Command : Command to give timeout**
 
+**13. Help Command : Command to check availalbe commands**
+
 ## Commands for Everyone
 
 **1. Botinfo Command : Command to check information about bot**
 
+**2. Help Command : Command to check available commands** 
+
+
+***Help commands are different for admins and normal users***
 
 ***More commands coming soon***
