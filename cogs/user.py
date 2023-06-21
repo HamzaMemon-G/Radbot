@@ -17,7 +17,6 @@ class User(commands.Cog):
         embed.add_field(name="Host", value="No Host", inline=True)
         embed.set_image(url="https://i.imgur.com/Zn06dLv.pngc")
         embed.set_footer(text="RADBOT", icon_url="https://i.imgur.com/Zn06dLv.png")
-
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 async def setup(bot: MyBot):
