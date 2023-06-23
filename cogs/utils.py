@@ -4,6 +4,7 @@ from discord import app_commands
 from typing import Optional
 import asyncio
 from datetime import timedelta
+import random
 from bot import MyBot
 from cogs.extra import allcommandslist, usercommandslist,url, iconurl
 
@@ -27,9 +28,10 @@ class Utils(commands.Cog):
             await channel.send(embed=embed)
             await channel.send(role.mention)
         else:
-            await channel.send(message)
+            await interaction.response.defer(thinking=True)
             await channel.send(role.mention)
-        await interaction.followup.send("Announced your message" , ephemeral=True)
+            await channel.send(message)
+        await interaction.followup.send("Announced your message", ephemeral=True)
 
     @app_commands.command(name="poll", description="Create a poll")
     @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
