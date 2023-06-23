@@ -2,11 +2,11 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 from typing import Optional
-import asyncio
-from datetime import timedelta
 import random
 from bot import MyBot
 from cogs.extra import allcommandslist, usercommandslist,url, iconurl
+import asyncio
+import datetime
 
 class Utils(commands.Cog):
     def __init__(self, bot: MyBot):
@@ -117,6 +117,34 @@ class Utils(commands.Cog):
 
         await interaction.response.send_message(embed=embed, ephemeral=True)
         
+    @app_commands.command(name="giveaway", description="Start a giveaway")
+    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
+    async def giveaway(self, interaction: discord.Interaction, channel: discord.TextChannel, description: str, duration: int, winners: int, *, prize: str):
+        embed = discord.Embed(title="Giveaway", description=description, color=discord.Color.from_rgb(255, 119, 0))        
+        embed.add_field(name="Prize", value=prize)
+        embed.add_field(name="Duration", value=f"{duration} seconds")
+        embed.add_field(name="Winners", value=winners)
+        embed.add_field(name="Hosted by", value=interaction.user.mention)
+        end_time = datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)
+        embed.set_footer(text=f"Ends at {end_time.strftime('%Y-%m-%d %H:%M:%S')} UTC")
+        message = await channel.send(embed=embed)
+        await message.add_reaction("🎉")
+        await interaction.response.send_message("Giveaway created!", ephemeral=True)
+
+        duration = datetime.timedelta(seconds=duration)
+        await asyncio.sleep(duration.total_seconds())
+        message = await channel.fetch_message(message.id)
+        users = [user async for user in message.reactions[0].users()]
+        users.remove(self.bot.user)
+        users = random.sample(users, winners)
+
+        if len(users) == 0:
+            await channel.send("No one won the giveaway!")
+        else:
+            winner_list = ""
+            for user in users:
+                winner_list += f"{user.mention}\n"
+            await channel.send(f"**Congratulations {winner_list}! You won the giveaway for {prize}!**")
 
 async def setup(bot: MyBot):
     await bot.add_cog(Utils(bot))
