@@ -7,6 +7,7 @@ from bot import MyBot
 from cogs.extra import allcommandslist, usercommandslist,url, iconurl
 import asyncio
 import datetime
+import typing
 
 class Utils(commands.Cog):
     def __init__(self, bot: MyBot):
@@ -119,17 +120,24 @@ class Utils(commands.Cog):
         
     @app_commands.command(name="giveaway", description="Start a giveaway")
     @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
-    async def giveaway(self, interaction: discord.Interaction, channel: discord.TextChannel, description: str, duration: int, winners: int, *, prize: str):
+    async def giveaway(self, interaction: discord.Interaction, channel: discord.TextChannel, description: str, duration: int, winners: int, *, prize: str, host: Optional[discord.Member] = None):
+        
+        await interaction.response.defer(thinking=True)
+        if host is None:
+            host_mention = interaction.user.mention
+        else:
+            host_mention = host.mention
+
         embed = discord.Embed(title="Giveaway", description=description, color=discord.Color.from_rgb(255, 119, 0))        
         embed.add_field(name="Prize", value=prize)
         embed.add_field(name="Duration", value=f"{duration} seconds")
         embed.add_field(name="Winners", value=winners)
-        embed.add_field(name="Hosted by", value=interaction.user.mention)
+        embed.add_field(name="Hosted by", value=host_mention)
         end_time = datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)
         embed.set_footer(text=f"Ends at {end_time.strftime('%Y-%m-%d %H:%M:%S')} UTC")
         message = await channel.send(embed=embed)
         await message.add_reaction("🎉")
-        await interaction.response.send_message("Giveaway created!", ephemeral=True)
+        await interaction.followup.send("Giveaway created!", ephemeral=True)
 
         duration = datetime.timedelta(seconds=duration)
         await asyncio.sleep(duration.total_seconds())
