@@ -32,6 +32,8 @@
 
 **13. Help Command : Command to check availalbe commands**
 
+**14. Giveaway Command : Command to host Giveaway**
+
 ## Commands for Everyone
 
 **1. Botinfo Command : Command to check information about bot**
