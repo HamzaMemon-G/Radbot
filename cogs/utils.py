@@ -136,11 +136,11 @@ class Utils(commands.Cog):
         message = await channel.fetch_message(message.id)
         users = [user async for user in message.reactions[0].users()]
         users.remove(self.bot.user)
-        users = random.sample(users, winners)
 
         if len(users) == 0:
-            await channel.send("No one won the giveaway!")
+            await channel.send("**No one entered the giveaway!**")
         else:
+            users = random.sample(users, winners)
             winner_list = ""
             for user in users:
                 winner_list += f"{user.mention}\n"
