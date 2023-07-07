@@ -14,7 +14,7 @@ class Utils(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="announce", description="Announce a message to a channel")
-    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
+    @app_commands.checks.has_any_role("Staff", "Moderator", "SR.Moderator", "Admin", "SR.Admin")
     async def announce(self, interaction: discord.Interaction, channel: discord.TextChannel, role: discord.Role, embed: bool, *, message: str, title: Optional[str]=None, author: Optional[str]=None,r: Optional[int]=255, g: Optional[int]=119, b: Optional[int]=0):
     
         if embed == True:
@@ -35,7 +35,7 @@ class Utils(commands.Cog):
         await interaction.followup.send("Announced your message", ephemeral=True)
 
     @app_commands.command(name="poll", description="Create a poll")
-    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
+    @app_commands.checks.has_any_role("Staff", "Moderator", "SR.Moderator", "Admin", "SR.Admin")
     async def poll(self, interaction: discord.Interaction, *, title: str, question: str, reaction1: str, reaction2: str, duration: int, r: Optional[int]=255, g: Optional[int]=119, b: Optional[int]=0):
         embed = discord.Embed(title=title, description=question, color=discord.Color.from_rgb(r, g, b))
         embed.set_footer(text=f"Poll created by {interaction.user}")
@@ -73,18 +73,18 @@ class Utils(commands.Cog):
         await interaction.channel.send(result_message)
 
     @app_commands.command(name="synccommands", description="Sync all the commands")
-    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
+    @app_commands.checks.has_any_role("Staff", "Moderator", "SR.Moderator", "Admin", "Sr.Admin")
     async def sync_command(self, interaction: discord.Interaction):
         await self.bot.tree.sync()
         await interaction.response.send_message("Synced all the commands", ephemeral=True)    
 
     @app_commands.command(name="status", description="test command")
-    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
+    @app_commands.checks.has_any_role("Staff", "Moderator", "SR.Moderator", "Admin", "SR.Admin")
     async def Status(self, interaction: discord.Interaction):
         await interaction.response.send_message("Bot is working fine", ephemeral=True)
 
     @app_commands.command(name="say", description="Say a message")
-    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
+    @app_commands.checks.has_any_role("Staff", "Moderator", "SR.Moderator", "Admin", "SR.Admin")
     async def say(self, interaction: discord.Interaction, channel: discord.TextChannel, embed: bool, *, message: str, title: Optional[str]=None, r: Optional[int]=255, g: Optional[int]=119, b: Optional[int]=0):
         
         if embed == True:
@@ -100,7 +100,7 @@ class Utils(commands.Cog):
     @app_commands.command(name="help", description="Get help about commands")
     async def help(self, interaction: discord.Interaction):
 
-        if any(role.name in ["STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN"] for role in interaction.user.roles):
+        if any(role.name in ["Staff", "Moderator", "SR.Moderator", "Admin", "SR.Admin"] for role in interaction.user.roles):
             embed = discord.Embed(title="Help (Staff)", description="", colour=0xff7700)
             embed.set_author(name="RADBOT", url=url, icon_url=iconurl)
             embed.set_thumbnail(url=iconurl)
@@ -119,7 +119,7 @@ class Utils(commands.Cog):
         await interaction.response.send_message(embed=embed, ephemeral=True)
         
     @app_commands.command(name="giveaway", description="Start a giveaway")
-    @app_commands.checks.has_any_role("STAFF", "MODERATOR", "SR.MODERATOR", "ADMIN", "SR.ADMIN")
+    @app_commands.checks.has_any_role("Staff", "Moderator", "SR.Moderator", "Admin", "SR.Admin")
     async def giveaway(self, interaction: discord.Interaction, channel: discord.TextChannel, description: str, duration: int, winners: int, *, prize: str, host: Optional[discord.Member] = None):
         
         await interaction.response.defer(thinking=True)
