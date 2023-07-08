@@ -15,13 +15,13 @@ class Error(commands.Cog):
             await interaction.response.send_message("Opps you don't have permission, go die!", ephemeral=True)
 
         elif isinstance(error, app_commands.CommandOnCooldown):
-            await interaction.response.send_message("Wait it's on cooldown", ephemeral=True)
+            await interaction.response.send_message("Wait it's on cooldown Stupid!", ephemeral=True)
 
         elif isinstance(error, app_commands.CheckFailure):
-            await interaction.response.send_message("Command Failed because of your dumbness", ephemeral=True)
+            await interaction.response.send_message("Command failed because of your dumbness", ephemeral=True)
 
         elif isinstance(error, app_commands.CommandSyncFailure):
-            await interaction.response.send_message("Command synced failed", ephemeral=True)
+            await interaction.response.send_message("Command synced failed because you don't know how to play piano", ephemeral=True)
 
 
 async def setup(bot: MyBot):
