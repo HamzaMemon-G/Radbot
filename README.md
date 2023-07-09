@@ -40,6 +40,7 @@
 
 **2. Help Command : Command to check available commands** 
 
+**3. Userinfo Command : Command to check information about user**
 
 ***Help commands are different for admins and normal users***
 
