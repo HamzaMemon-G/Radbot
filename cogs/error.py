@@ -23,6 +23,17 @@ class Error(commands.Cog):
         elif isinstance(error, app_commands.CommandSyncFailure):
             await interaction.response.send_message("Command synced failed because you don't know how to play piano", ephemeral=True)
 
+        elif isinstance(error, app_commands.UserInputError):
+            await interaction.response.send_message("Input Error, Because your failure", ephemeral=True)
+        
+        elif isinstance(error, app_commands.CommandNotFound):
+            await interaction.response.send_message("Command not found, There is not command like that", ephemeral=True)
+
+        elif isinstance(error, app_commands.MissingRequiredArgument):
+            await interaction.response.send_message("Missing required argument, You are missing argument like your brain", ephemeral=True)
+        
+        elif isinstance(error, app_commands.TooManyArguments):
+            await interaction.response.send_message("Too many arguments, You are giving too many arguments", ephemeral=True)
 
 async def setup(bot: MyBot):
     await bot.add_cog(Error(bot))
