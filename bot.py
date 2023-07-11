@@ -6,7 +6,7 @@ import os
 load_dotenv()
 token = os.getenv('BOT_TOKEN')
 
-cogs = ["cogs.utils", "cogs.mod", "cogs.greetings", "cogs.error", "cogs.user"]
+cogs = ["cogs.utils", "cogs.mod", "cogs.greetings", "cogs.error", "cogs.user", "cogs.welcome"]
 
 class MyBot(commands.Bot):
     def __init__(self, command_prefix: str, intents: discord.Intents, **kwargs):
