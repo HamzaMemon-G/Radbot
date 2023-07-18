@@ -6,7 +6,9 @@ import random
 
 greetings = ["Hello", "Hi", "Hey", "Yo", "What's up"]
 
-class Greetings(commands.Cog):
+
+
+class listeners(commands.Cog):
     def __init__(self, bot: MyBot):
         self.bot = bot
 
@@ -20,4 +22,4 @@ class Greetings(commands.Cog):
             await message.channel.send(random.choice(greetings))
 
 async def setup(bot: MyBot):
-    await bot.add_cog(Greetings(bot))
+    await bot.add_cog(listeners(bot))
