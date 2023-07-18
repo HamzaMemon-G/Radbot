@@ -2,11 +2,12 @@ import discord
 import discord.ext.commands as commands
 from dotenv import load_dotenv
 import os
+import asyncio
 
 load_dotenv()
 token = os.getenv('BOT_TOKEN')
 
-cogs = ["cogs.utils", "cogs.mod", "cogs.greetings", "cogs.error", "cogs.user", "cogs.welcome"]
+cogs = ["cogs.utils", "cogs.mod", "cogs.listners", "cogs.user", "cogs.welcome"]
 
 class MyBot(commands.Bot):
     def __init__(self, command_prefix: str, intents: discord.Intents, **kwargs):
@@ -19,8 +20,13 @@ class MyBot(commands.Bot):
 
     async def on_ready(self):
         print("Bot is ready")
-        activity = discord.Game(name="RADAR'S SERVER", type=discord.ActivityType.playing)
-        await bot.change_presence(activity=activity)
+        while True:
+            activity = discord.Game(name="Minecraft", type=discord.ActivityType.playing)
+            await bot.change_presence(activity=activity)
+            await asyncio.sleep(30)
+            activity = discord.Activity(name="RADAR'S SERVER", type=discord.ActivityType.watching)
+            await bot.change_presence(activity=activity)
+            await asyncio.sleep(30)
 
 if __name__ == "__main__":
 
