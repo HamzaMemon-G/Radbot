@@ -15,8 +15,11 @@ class Utils(commands.Cog):
 
     @app_commands.command(name="announce", description="Announce a message to a channel")
     @app_commands.checks.has_any_role("Staff", "Moderator", "SR.Moderator", "Admin", "SR.Admin")
-    async def announce(self, interaction: discord.Interaction, channel: discord.TextChannel, role: discord.Role, embed: bool, *, message: str, title: Optional[str]=None, author: Optional[str]=None,r: Optional[int]=255, g: Optional[int]=119, b: Optional[int]=0):
-    
+    async def announce(self, interaction: discord.Interaction, channel: discord.TextChannel, role: discord.Role, embed: bool, message: str, title: Optional[str] = None, author: Optional[str] = None, image: Optional[str] = None, r: Optional[int] = 255, g: Optional[int] = 119, b: Optional[int] = 0):
+        
+        await interaction.response.defer(thinking=True)
+        message = message.replace("\\n", "\n")
+
         if embed == True:
             embed = discord.Embed(title=title, description=message, color=discord.Color.from_rgb(r, g, b))
 
@@ -25,13 +28,21 @@ class Utils(commands.Cog):
             else:
                 embed.set_footer(text=f"announcement by {author}")
 
-            await interaction.response.defer(thinking=True)
+            if image is not None:
+                image_links = image.split(",")
+                for link in image_links:
+                    embed.set_image(url=link.strip())
+
             await channel.send(embed=embed)
             await channel.send(role.mention)
         else:
-            await interaction.response.defer(thinking=True)
-            await channel.send(role.mention)
-            await channel.send(message)
+            paragraphs = message.split("\n")
+            for paragraph in paragraphs:
+                await channel.send(role.mention)
+                await channel.send(paragraph)
+
+        
+
         await interaction.followup.send("Announced your message", ephemeral=True)
 
     @app_commands.command(name="poll", description="Create a poll")
