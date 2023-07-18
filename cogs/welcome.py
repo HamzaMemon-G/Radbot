@@ -17,7 +17,7 @@ class Welcome(commands.Cog):
         embed.set_image(url="https://i.imgur.com/zxnfIg2.png")
         embed.set_footer(text="RADAR'S SERVER Staff", icon_url="https://i.imgur.com/zxnfIg2.png")
         await channel.send(embed=embed)
-        await channel.send(f"**Welcome {member.mention} to Odyssey VTC**")
+        await channel.send(f"**Welcome {member.mention} to RADAR'S SERVER**")
 
 async def setup(bot: MyBot):
     await bot.add_cog(Welcome(bot))
