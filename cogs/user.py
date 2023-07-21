@@ -20,6 +20,11 @@ class User(commands.Cog):
         embed.set_footer(text="RADBOT", icon_url=iconurl)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
+    @botinfo.error
+    async def botinfo_error(self, interaction: discord.Interaction, error):
+        if isinstance(error, app_commands.CommandInvokeError):
+            await interaction.response.send_message("Sorry, an error occured. Please try again later.", ephemeral=True)            
+    
     @app_commands.command(name="userinfo", description="Get info about a user")
     async def userinfo(self, interaction: discord.Interaction, member: discord.Member):
         embed = discord.Embed(title="User Info", description=f"**About {member}**", colour=0xff7700)
@@ -32,6 +37,11 @@ class User(commands.Cog):
         embed.set_thumbnail(url=member.display_avatar)
         embed.set_footer(text="RADBOT", icon_url=iconurl)
         await interaction.response.send_message(embed=embed, ephemeral=True)
+
+    @userinfo.error
+    async def userinfo_error(self, interaction: discord.Interaction, error):
+        if isinstance(error, app_commands.CommandInvokeError):
+            await interaction.response.send_message("Sorry, an error occured. Please try again later.", ephemeral=True)
 
 async def setup(bot: MyBot):
     await bot.add_cog(User(bot))
