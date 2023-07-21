@@ -20,6 +20,10 @@ class listeners(commands.Cog):
         content = message.content.lower()
         if content in [greeting.lower() for greeting in greetings]:
             await message.channel.send(random.choice(greetings))
+        elif "ip" in content.lower():
+            await message.channel.send("> **IP:** `play.radarsserver.live`")
+        elif "help" in content.lower():
+            await message.channel.send("> **Need help?** vist `#help` channel") 
 
 async def setup(bot: MyBot):
     await bot.add_cog(listeners(bot))
