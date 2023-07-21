@@ -18,12 +18,12 @@ class Mod(commands.Cog):
         await interaction.response.send_message(f"Kicked {user} for **{reason}**", ephemeral=True)
 
     @kick.error
-    async def kick_error(self, interaction: discord.Interaction, error: commands.CommandError):
+    async def kick_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, discord.Forbidden):
             await interaction.response.send_message("I don't have permission to kick that user", ephemeral=True)
         elif isinstance(error, discord.HTTPException):
             await interaction.response.send_message("An error occured while trying to kick that user", ephemeral=True)
-        elif isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, app_commands.MissingRequiredArgument):
             await interaction.response.send_message("Please provide all the required arguments", ephemeral=True)
         elif isinstance(error, discord.NotFound):
             await interaction.response.send_message("User not found", ephemeral=True)
@@ -36,7 +36,7 @@ class Mod(commands.Cog):
         await interaction.followup.send(f"Warned {user} for **{reason}**", ephemeral=True)
 
     @warn.error
-    async def warn_error(self, interaction: discord.Interaction, error: commands.CommandError):
+    async def warn_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, discord.Forbidden):
             await interaction.response.send_message("I don't have permission to warn that user", ephemeral=True)
         elif isinstance(error, discord.HTTPException):
@@ -54,12 +54,12 @@ class Mod(commands.Cog):
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @whois.error
-    async def whois_error(self, interaction: discord.Interaction, error: commands.CommandError):
+    async def whois_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, discord.Forbidden):
             await interaction.response.send_message("I don't have permission to get information about that user", ephemeral=True)
         elif isinstance(error, discord.HTTPException):
             await interaction.response.send_message("An error occured while trying to get information about that user", ephemeral=True)
-        elif isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, app_commands.MissingRequiredArgument):
             await interaction.response.send_message("Please provide all the required arguments", ephemeral=True)
 
     @app_commands.command(name="purge", description="Purge messages in a channel")
@@ -69,12 +69,12 @@ class Mod(commands.Cog):
         await interaction.response.send_message(f"Purged {amount} messages", ephemeral=True)
 
     @purge.error
-    async def purge_error(self, interaction: discord.Interaction, error: commands.CommandError):
+    async def purge_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, discord.Forbidden):
             await interaction.response.send_message("I don't have permission to purge messages", ephemeral=True)
         elif isinstance(error, discord.HTTPException):
             await interaction.response.send_message("An error occured while trying to purge messages", ephemeral=True)
-        elif isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, app_commands.MissingRequiredArgument):
             await interaction.response.send_message("Please provide all the required arguments", ephemeral=True)
 
     @app_commands.command(name="ban", description="Ban a user from the server")
@@ -85,12 +85,12 @@ class Mod(commands.Cog):
         await interaction.response.send_message(f"Banned {user} for **{reason}**", ephemeral=True)
 
     @ban.error
-    async def ban_error(self, interaction: discord.Interaction, error: commands.CommandError):
+    async def ban_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, discord.Forbidden):
             await interaction.response.send_message("I don't have permission to ban that user", ephemeral=True)
         elif isinstance(error, discord.HTTPException):
             await interaction.response.send_message("An error occured while trying to ban that user", ephemeral=True)
-        elif isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, app_commands.MissingRequiredArgument):
             await interaction.response.send_message("Please provide all the required arguments", ephemeral=True)
         elif isinstance(error, discord.NotFound):
             await interaction.response.send_message("User not found", ephemeral=True)
@@ -105,12 +105,12 @@ class Mod(commands.Cog):
         await dm_channel.send(f"You have been unbanned from **{interaction.guild.name}** for **{reason}**")
         
     @unban.error
-    async def unban_error(self, interaction: discord.Interaction, error: commands.CommandError):
+    async def unban_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, discord.Forbidden):
             await interaction.response.send_message("I don't have permission to unban that user", ephemeral=True)
         elif isinstance(error, discord.HTTPException):
             await interaction.response.send_message("An error occured while trying to unban that user", ephemeral=True)
-        elif isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, app_commands.MissingRequiredArgument):
             await interaction.response.send_message("Please provide all the required arguments", ephemeral=True)
         elif isinstance(error, discord.NotFound):
             await interaction.response.send_message("User not found", ephemeral=True)   
@@ -124,12 +124,12 @@ class Mod(commands.Cog):
         await interaction.response.send_message(f"Timed out {member} for **{reason}**", ephemeral=True)
     
     @timeout.error
-    async def timeout_error(self, interaction: discord.Interaction, error: commands.CommandError):
+    async def timeout_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, discord.Forbidden):
             await interaction.response.send_message("I don't have permission to timeout that user", ephemeral=True)
         elif isinstance(error, discord.HTTPException):
             await interaction.response.send_message("An error occured while trying to timeout that user", ephemeral=True)
-        elif isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, app_commands.MissingRequiredArgument):
             await interaction.response.send_message("Please provide all the required arguments", ephemeral=True)
         elif isinstance(error, discord.NotFound):
             await interaction.response.send_message("User not found", ephemeral=True)        
@@ -142,12 +142,12 @@ class Mod(commands.Cog):
         await interaction.response.send_message(f"Muted {member} for **{reason}**", ephemeral=True)
 
     @mute.error
-    async def mute_error(self, interaction: discord.Interaction, error: commands.CommandError):
+    async def mute_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, discord.Forbidden):
             await interaction.response.send_message("I don't have permission to mute that user", ephemeral=True)
         elif isinstance(error, discord.HTTPException):
             await interaction.response.send_message("An error occured while trying to mute that user", ephemeral=True)
-        elif isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, app_commands.MissingRequiredArgument):
             await interaction.response.send_message("Please provide all the required arguments", ephemeral=True)
         elif isinstance(error, discord.NotFound):
             await interaction.response.send_message("User not found", ephemeral=True)
@@ -160,12 +160,12 @@ class Mod(commands.Cog):
         await interaction.response.send_message(f"Unmuted {member} for **{reason}**", ephemeral=True)
         
     @unmute.error
-    async def unmute_error(self, interaction: discord.Interaction, error: commands.CommandError):
+    async def unmute_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, discord.Forbidden):
             await interaction.response.send_message("I don't have permission to unmute that user", ephemeral=True)
         elif isinstance(error, discord.HTTPException):
             await interaction.response.send_message("An error occured while trying to unmute that user", ephemeral=True)
-        elif isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, app_commands.MissingRequiredArgument):
             await interaction.response.send_message("Please provide all the required arguments", ephemeral=True)
         elif isinstance(error, discord.NotFound):
             await interaction.response.send_message("User not found", ephemeral=True)
@@ -177,12 +177,12 @@ class Mod(commands.Cog):
         await interaction.response.send_message("Locked the voice channel", ephemeral=True)
 
     @voicelock.error
-    async def voicelock_error(self, interaction: discord.Interaction, error: commands.CommandError):
+    async def voicelock_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, discord.Forbidden):
             await interaction.response.send_message("I don't have permission to lock that voice channel", ephemeral=True)
         elif isinstance(error, discord.HTTPException):
             await interaction.response.send_message("An error occured while trying to lock that voice channel", ephemeral=True)
-        elif isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, app_commands.MissingRequiredArgument):
             await interaction.response.send_message("Please provide all the required arguments", ephemeral=True)
         elif isinstance(error, discord.NotFound):
             await interaction.response.send_message("Voice channel not found", ephemeral=True)
@@ -194,12 +194,12 @@ class Mod(commands.Cog):
         await interaction.response.send_message("Unlocked the voice channel", ephemeral=True)
 
     @voiceunlock.error
-    async def voiceunlock_error(self, interaction: discord.Interaction, error: commands.CommandError):
+    async def voiceunlock_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
         if isinstance(error, discord.Forbidden):
             await interaction.response.send_message("I don't have permission to unlock that voice channel", ephemeral=True)
         elif isinstance(error, discord.HTTPException):
             await interaction.response.send_message("An error occured while trying to unlock that voice channel", ephemeral=True)
-        elif isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, app_commands.MissingRequiredArgument):
             await interaction.response.send_message("Please provide all the required arguments", ephemeral=True)
         elif isinstance(error, discord.NotFound):
             await interaction.response.send_message("Voice channel not found", ephemeral=True)
