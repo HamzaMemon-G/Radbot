@@ -15,13 +15,15 @@ class Utils(commands.Cog):
 
     @app_commands.command(name="announce", description="Announce a message to a channel")
     @app_commands.checks.has_any_role("Staff", "Moderator", "SR.Moderator", "Admin", "SR.Admin")
-    async def announce(self, interaction: discord.Interaction, channel: discord.TextChannel, role: discord.Role, embed: bool, message: str, title: Optional[str] = None, author: Optional[str] = None, image: Optional[str] = None, r: Optional[int] = 255, g: Optional[int] = 119, b: Optional[int] = 0):
+    async def announce(self, interaction: discord.Interaction, channel: discord.TextChannel, embed: bool, role: Optional[discord.Role] = None, message: Optional[str] = None, title: Optional[str] = None, url: Optional[str] = None, author: Optional[str] = None, image: Optional[str] = None, r: Optional[int] = 255, g: Optional[int] = 119, b: Optional[int] = 0):
         
         await interaction.response.defer(thinking=True)
         message = message.replace("\\n", "\n")
 
         if embed == True:
-            embed = discord.Embed(title=title, description=message, color=discord.Color.from_rgb(r, g, b))
+            embed = discord.Embed(title=title, url=url, description=message, color=discord.Color.from_rgb(r, g, b))
+            if message is None:
+                embed.description = ""
 
             if author is None:
                 embed.set_footer(text=f"announcement by {interaction.user}")
@@ -32,27 +34,34 @@ class Utils(commands.Cog):
                 image_links = image.split(",")
                 for link in image_links:
                     embed.set_image(url=link.strip())
-
-            await channel.send(embed=embed)
-            await channel.send(role.mention)
+            if role is not None:
+                mention = role.mention
+                embed=embed
+                await channel.send(content=mention, embed=embed)
+            else:
+                await channel.send(embed=embed)
         else:
-            paragraphs = message.split("\n")
-            for paragraph in paragraphs:
-                await channel.send(role.mention)
-                await channel.send(paragraph)
-
-        
+            if role is not None:
+                mention = role.mention
+                paragraphs = message.split("\n")
+                for paragraph in paragraphs:
+                    await channel.send(f"{mention}\n{paragraph}")
+            else:
+                await channel.send(content=message)
 
         await interaction.followup.send("Announced your message", ephemeral=True)
 
     @app_commands.command(name="poll", description="Create a poll")
     @app_commands.checks.has_any_role("Staff", "Moderator", "SR.Moderator", "Admin", "SR.Admin")
     async def poll(self, interaction: discord.Interaction, *, title: str, question: str, reaction1: str, reaction2: str, duration: int, r: Optional[int]=255, g: Optional[int]=119, b: Optional[int]=0):
+        guild = interaction.guild
+        emoji1 = discord.PartialEmoji(name=reaction1)
+        emoji2 = discord.PartialEmoji(name=reaction2)
         embed = discord.Embed(title=title, description=question, color=discord.Color.from_rgb(r, g, b))
         embed.set_footer(text=f"Poll created by {interaction.user}")
         message = await interaction.channel.send(embed=embed)
-        await message.add_reaction(reaction1)
-        await message.add_reaction(reaction2)
+        await message.add_reaction(emoji1)
+        await message.add_reaction(emoji2)
         await interaction.response.send_message("Poll created!", ephemeral=True)
 
         duration = datetime.timedelta(seconds=duration)
@@ -64,9 +73,9 @@ class Utils(commands.Cog):
         count2 = 0
 
         for reaction in message.reactions:
-            if reaction.emoji == reaction1:
+            if reaction.emoji == emoji1:
                 count1 = reaction.count - 1  
-            elif reaction.emoji == reaction2:
+            elif reaction.emoji == emoji2:
                 count2 = reaction.count - 1
 
         if count1 > count2:
