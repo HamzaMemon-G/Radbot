@@ -8,6 +8,7 @@ from cogs.extra import allcommandslist, usercommandslist,url, iconurl
 import asyncio
 import datetime
 import typing
+import pytz
 
 class Utils(commands.Cog):
     def __init__(self, bot: MyBot):
@@ -52,43 +53,48 @@ class Utils(commands.Cog):
         await interaction.followup.send("Announced your message", ephemeral=True)
 
     @app_commands.command(name="poll", description="Create a poll")
+    @app_commands.describe(duration="When the poll should end (YYYY-MM-DD HH:MM:SS)")
     @app_commands.checks.has_any_role("Staff", "Moderator", "SR.Moderator", "Admin", "SR.Admin")
-    async def poll(self, interaction: discord.Interaction, *, title: str, question: str, reaction1: str, reaction2: str, duration: int, r: Optional[int]=255, g: Optional[int]=119, b: Optional[int]=0):
-        guild = interaction.guild
-        emoji1 = discord.PartialEmoji(name=reaction1)
-        emoji2 = discord.PartialEmoji(name=reaction2)
+    async def poll(self, interaction: discord.Interaction, *, title: str, question: str, duration: str, option1: str, option2: str, r: Optional[int]=255, g: Optional[int]=119, b: Optional[int]=0):
         embed = discord.Embed(title=title, description=question, color=discord.Color.from_rgb(r, g, b))
-        embed.set_footer(text=f"Poll created by {interaction.user}")
+
+        duration = datetime.datetime.strptime(duration, "%Y-%m-%d %H:%M:%S")
+        user_timezone = pytz.timezone("Asia/Kolkata")
+        duration = user_timezone.localize(duration)
+        duration_utc = duration.astimezone(pytz.utc)
+
+        end_time_utc = duration_utc.strftime("%Y-%m-%d %I:%M:%S %p %Z")
+        end_time_local = duration.astimezone(user_timezone).strftime("%Y-%m-%d %I:%M:%S %p %Z")
+        embed.set_footer(text=f"Poll created by {interaction.user} | Ends at ({end_time_local}) ({end_time_utc})")
+
+        embed.add_field(name="Option 1", value=option1, inline=False)
+        embed.add_field(name="Option 2", value=option2, inline=False)
+
         message = await interaction.channel.send(embed=embed)
-        await message.add_reaction(emoji1)
-        await message.add_reaction(emoji2)
         await interaction.response.send_message("Poll created!", ephemeral=True)
 
-        duration = datetime.timedelta(seconds=duration)
-        await asyncio.sleep(duration.total_seconds())
+        option_emojis = ["1️⃣", "2️⃣"]
+        for i in range(2):
+            await message.add_reaction(option_emojis[i])
+
+        now = datetime.datetime.now(pytz.utc)
+        delta = duration_utc - now
+        await asyncio.sleep(delta.total_seconds())
 
         message = await interaction.channel.fetch_message(message.id)
 
-        count1 = 0
-        count2 = 0
-
+        counts = [0, 0]
         for reaction in message.reactions:
-            if reaction.emoji == emoji1:
-                count1 = reaction.count - 1  
-            elif reaction.emoji == emoji2:
-                count2 = reaction.count - 1
+            if reaction.emoji in option_emojis:
+                index = option_emojis.index(reaction.emoji)
+                counts[index] = reaction.count - 1
 
-        if count1 > count2:
-            winner = reaction1
-        elif count2 > count1:
-            winner = reaction2
+        if counts[0] > counts[1]:
+            result_message = f"The winner is **{option1}** with {counts[0]} votes!"
+        elif counts[1] > counts[0]:
+            result_message = f"The winner is **{option2}** with {counts[1]} votes!"
         else:
-            winner = "Tie"
-
-        if winner == "Tie":
-            result_message = "The poll ended in a tie!"
-        else:
-            result_message = f"The winner is {winner} with {max(count1, count2)} votes!"
+            result_message = f"The poll ended in a tie with **{counts[0]}** votes each!"
 
         await interaction.channel.send(result_message)
 
