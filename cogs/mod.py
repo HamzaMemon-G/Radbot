@@ -98,7 +98,7 @@ class Mod(commands.Cog):
     @app_commands.command(name="unban", description="Unban a user from the server")
     @app_commands.checks.has_any_role("Staff", "Moderator", "SR.Moderator", "Admin", "Sr.Admin")
     async def unban(self, interaction: discord.Interaction, user: discord.User, *, reason: str):
-        member = await bot.fetch_user(user.id)
+        member = await user.fetch_user(user.id)
         await interaction.guild.unban(member, reason=reason)
         await interaction.channel.send(f"Unbanned {user.mention} for **{reason}**")
         dm_channel = await user.create_dm()
