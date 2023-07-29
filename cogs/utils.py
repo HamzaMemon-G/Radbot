@@ -179,6 +179,45 @@ class Utils(commands.Cog):
             for user in users:
                 winner_list += f"{user.mention}\n"
             await channel.send(f"**Congratulations {winner_list}! You won the giveaway for {prize}!**")
+    
+    @app_commands.command(name="eventannouncement", description="Announce an event")
+    @app_commands.checks.has_any_role("Staff", "Moderator", "SR.Moderator", "Admin", "SR.Admin")
+    async def event(self, interaction: discord.Interaction, channel: discord.TextChannel, embed: bool, role: Optional[discord.Role] = None, message: Optional[str] = None, title: Optional[str] = None, url: Optional[str] = None, author: Optional[str] = None, image: Optional[str] = None, r: Optional[int] = 255, g: Optional[int] = 119, b: Optional[int] = 0):
+        
+        await interaction.response.defer(thinking=True)
+        message = message.replace("\\n", "\n")
+
+        if embed == True:
+            embed = discord.Embed(title=title, url=url, description=message, color=discord.Color.from_rgb(r, g, b))
+            if message is None:
+                embed.description = ""
+
+            if author is None:
+                embed.set_footer(text=f"announcement by {interaction.user}")
+            else:
+                embed.set_footer(text=f"announcement by {author}")
+
+            if image is not None:
+                image_links = image.split(",")
+                for link in image_links:
+                    embed.set_image(url=link.strip())
+            if role is not None:
+                mention = role.mention
+                embed=embed
+                await channel.send(content=mention, embed=embed)
+            else:
+                await channel.send(embed=embed)
+        else:
+            if role is not None:
+                mention = role.mention
+                paragraphs = message.split("\n")
+                for paragraph in paragraphs:
+                    await channel.send(f"{mention}\n{paragraph}")
+            else:
+                await channel.send(content=message)
+
+        await interaction.followup.send("Announced your message", ephemeral=True)
+
 
 async def setup(bot: MyBot):
     await bot.add_cog(Utils(bot))
